@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.data.model.Data
-import com.example.myapplication.data.model.DeleteUserResponseModel
 import com.example.myapplication.data.model.RequestUserModel
 import com.example.myapplication.data.model.UserResponseModel
 import com.example.myapplication.domain.CreateUser

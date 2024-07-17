@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.data.model.UserModel
 import com.example.myapplication.databinding.FragmentListUserBinding
 import com.example.myapplication.iu.adapter.UserAdapter
 import com.example.myapplication.iu.viewModel.UserViewModel
@@ -38,13 +37,12 @@ class ListUserFragment : Fragment(), UserAdapter.OnUserClickListener {
         initRecyclerView()
         initListener()
         setupObserver()
+        fragmentResultListener()
+    }
 
-        setFragmentResultListener("requestKey") { _, bundle ->
-            val user: UserModel? = bundle.getParcelable("user")
-            user?.let {
-                // Usa el objeto UserModel como lo necesites
-                userAdapter?.add(it)
-            }
+    private fun fragmentResultListener(){
+        setFragmentResultListener("userKey") { _, bundle ->
+            userViewModel.loadData()
         }
     }
 
@@ -59,29 +57,18 @@ class ListUserFragment : Fragment(), UserAdapter.OnUserClickListener {
 
     private fun setupObserver() {
 
-        println("mmp: setupObserver")
         userViewModel.getDataUserState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UserViewModel.GetDataUserState.Loading -> {
-                    println("mmp: Loading")
                     showLoading()
                 }
 
                 is UserViewModel.GetDataUserState.DataLoaded -> {
-                    println("mmp: DataLoaded")
                     hideLoading()
                     userAdapter?.setUser(requireContext(), state.userResponseResult.data)
                 }
 
-                is UserViewModel.GetDataUserState.DeleteUser -> {
-                    println("mmp: DeleteUser")
-                    Toast.makeText(requireContext(), "eliminado", Toast.LENGTH_LONG).show()
-                    userAdapter?.removeUser(state.idDelete.id)
-                    hideLoading()
-                }
-
                 is UserViewModel.GetDataUserState.Error -> {
-                    println("mmp: Error")
                     Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                     hideLoading()
                 }

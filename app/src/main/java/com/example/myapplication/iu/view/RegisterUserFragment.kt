@@ -1,32 +1,30 @@
 package com.example.myapplication.iu.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.myapplication.R
 import com.example.myapplication.data.model.RequestUserModel
 import com.example.myapplication.data.model.UserModel
 import com.example.myapplication.databinding.FragmentRegisterUserBinding
-import com.example.myapplication.iu.adapter.UserAdapter
 import com.example.myapplication.iu.viewModel.RegisterUserViemModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
+const val OBLIGATORY_FIELD = "Este campo es obligatorio"
 @AndroidEntryPoint
-class RegisterUserFragment : Fragment(), UserAdapter.OnUserClickListener {
+class RegisterUserFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterUserBinding
     private val viemModel: RegisterUserViemModel by viewModels()
-    private var userAdapter: UserAdapter? = UserAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +56,7 @@ class RegisterUserFragment : Fragment(), UserAdapter.OnUserClickListener {
 
                     val resultBundle = Bundle()
                     resultBundle.putParcelable("user", user)
-                    setFragmentResult("requestKey", resultBundle)
+                    setFragmentResult("userKey", resultBundle)
 
                     parentFragmentManager.popBackStack()
                 }
@@ -106,14 +104,10 @@ class RegisterUserFragment : Fragment(), UserAdapter.OnUserClickListener {
     private fun validateFields(vararg fields: EditText): Boolean {
         fields.forEach { field ->
             if (field.text.toString().trim().isEmpty()) {
-                field.error = "Este campo es obligatorio"
+                field.error = OBLIGATORY_FIELD
                 return false
             }
         }
         return true
-    }
-
-    override fun onUserClicked(id: String) {
-        TODO("Not yet implemented")
     }
 }

@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.data.model.DeleteUserResponseModel
 import com.example.myapplication.data.model.UserModel
 import com.example.myapplication.databinding.ItemUserBinding
 import com.squareup.picasso.Picasso
@@ -22,23 +21,11 @@ class UserAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setUser(context: Context, dataUser: List<UserModel>) {
+        this.dataUser.clear()
         this.dataUser.addAll(dataUser)
         this.context = context
         notifyDataSetChanged()
     }
-
-    fun removeUser(idUser: String){
-        dataUser.removeIf {
-            it.id == idUser
-        }
-        notifyDataSetChanged()
-    }
-
-    fun add(user: UserModel){
-        dataUser.add(user)
-        notifyDataSetChanged()
-    }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
