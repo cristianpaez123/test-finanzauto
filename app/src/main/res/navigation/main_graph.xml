@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/listUserFragment">
+
+    <fragment
+        android:id="@+id/listUserFragment"
+        android:name="com.example.myapplication.iu.view.ListUserFragment"
+        tools:layout="@layout/fragment_list_user">
+        <action
+            android:id="@+id/action_listUserFragment_to_RegisterUserFragment"
+            app:destination="@id/RegisterUserFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/RegisterUserFragment"
+        android:name="com.example.myapplication.iu.view.RegisterUserFragment"
+        tools:layout="@layout/fragment_register_user">
+    </fragment>
+</navigation>
