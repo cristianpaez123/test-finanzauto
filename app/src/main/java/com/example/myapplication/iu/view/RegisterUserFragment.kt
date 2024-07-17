@@ -20,6 +20,8 @@ import kotlinx.coroutines.launch
 
 
 const val OBLIGATORY_FIELD = "Este campo es obligatorio"
+const val ERROR = "ERROR"
+
 @AndroidEntryPoint
 class RegisterUserFragment : Fragment() {
 
@@ -46,7 +48,7 @@ class RegisterUserFragment : Fragment() {
         viemModel.registerUserStateUserState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is RegisterUserViemModel.RegisterUserState.DataLoaded -> {
-                   var user = UserModel(
+                    var user = UserModel(
                         id = state.userResponseResult.id,
                         title = state.userResponseResult.title,
                         firstName = state.userResponseResult.firstName,
@@ -62,7 +64,7 @@ class RegisterUserFragment : Fragment() {
                 }
 
                 is RegisterUserViemModel.RegisterUserState.Error -> {
-                    Toast.makeText(requireContext(), "ERROR", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), ERROR, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -72,42 +74,17 @@ class RegisterUserFragment : Fragment() {
         binding.apply {
             btnRegister.setOnClickListener {
                 CoroutineScope(Dispatchers.Main).launch {
-                    if (validateFields(
-                            etTitle,
-                            etFirstName,
-                            etLastName,
-                            etGender,
-                            etEmail,
-                            etDateOfBirth,
-                            etPhone,
-                        )
-                    ) {
-
-                        viemModel.createUser(
-                            RequestUserModel(
-                                title = etTitle.text.toString(),
-                                firstName = etFirstName.text.toString(),
-                                lastName = etLastName.text.toString(),
-                                gender = etGender.text.toString(),
-                                email = etEmail.text.toString(),
-                                dateOfBirth = etDateOfBirth.text.toString(),
-                                phone = etPhone.text.toString(),
-                                picture = "https://randomuser.me/api/portraits/med/men/80.jpg"
-                            )
-                        )
-                    }
+                    viemModel.createUser(
+                        etTitle,
+                        etFirstName,
+                        etLastName,
+                        etGender,
+                        etEmail,
+                        etDateOfBirth,
+                        etPhone,
+                    )
                 }
             }
         }
-    }
-
-    private fun validateFields(vararg fields: EditText): Boolean {
-        fields.forEach { field ->
-            if (field.text.toString().trim().isEmpty()) {
-                field.error = OBLIGATORY_FIELD
-                return false
-            }
-        }
-        return true
     }
 }
